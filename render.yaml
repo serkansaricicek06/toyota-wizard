@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: toyota-wizard-api
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: frankfurt
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production

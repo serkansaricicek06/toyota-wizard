@@ -1,0 +1,35 @@
+# =========================================================================
+# Toyota Akıllı Araç Bulucu - Bot Tarama & Gizlilik Kuralları (robots.txt)
+# =========================================================================
+
+# 1. Genel Arama Motoru Botları (Googlebot, Bingbot, YandexBot, vb.)
+User-agent: *
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /api/
+Disallow: /api/*
+Allow: /
+Allow: /assets/
+
+# 2. Yapay Zeka & LLM Tarayıcıları (OpenAI, Anthropic, CommonCrawl, vb.)
+User-agent: GPTBot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /api/
+
+User-agent: ClaudeBot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /api/
+
+User-agent: CCBot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /api/
+
+# 3. Site Haritası (Sadece müşteri ön yüz rotaları taranabilir)
+# Sitemap: https://yourdomain.com/sitemap.xml

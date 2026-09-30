@@ -1,0 +1,145 @@
+@import "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-primary: #FF0022;
+  --color-dark: #282830;
+  --color-gray-dark: #6C7073;
+  --color-gray-light: #A8AAAC;
+  --color-border: #E4E4E4;
+  --color-bg-subtle: #F5F5F5;
+  --color-success: #4CAF50;
+  --color-hybrid: #0072F0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #0a0a0f;
+  color: #282830;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Animations */
+@keyframes laneMove {
+  0% { transform: translate(0); }
+  100% { transform: translate(-50%); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulseRed {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes sheetUp {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes sheetFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes modalPop {
+  0% { opacity: 0; transform: translate(-50%, -46%) scale(0.96); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes pillSlideUp {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardPulse {
+  0% { border-color: #2e2e38; box-shadow: 0 0 transparent; }
+  30% { border-color: #4caf50; box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4); }
+  100% { border-color: #2e2e38; box-shadow: 0 0 transparent; }
+}
+
+@keyframes riseIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Interactive Utility Classes */
+.dt-focusable:focus-visible {
+  outline: 2px solid #0072F0;
+  outline-offset: 2px;
+}
+
+.dt-answer-card {
+  transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+
+@media (hover: hover) {
+  .dt-answer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(40, 40, 48, 0.08);
+    border-color: #282830 !important;
+  }
+
+  .dt-outline-btn:hover {
+    background: rgba(40, 40, 48, 0.04) !important;
+  }
+
+  .dt-solid-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  .dt-solid-light:hover {
+    filter: brightness(0.97);
+  }
+
+  .dt-cat-row:hover {
+    background: #23232b !important;
+  }
+
+  .dt-link:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
