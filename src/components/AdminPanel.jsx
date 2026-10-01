@@ -2503,21 +2503,6 @@ export function AdminPanel({ onExit }) {
                           </span>
                         </div>
                       </div>
-
-                      <div style={{
-                        background: '#F9FAFB',
-                        border: '1px solid #E5E7EB',
-                        borderRadius: 8,
-                        padding: '10px 12px'
-                      }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
-                          <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 600 }}>Tavsiye Edilen Başlangıç Fiyatı</span>
-                          <span style={{ fontSize: 10, color: '#059669', fontWeight: 700 }}>✓ Resmi Toyota API</span>
-                        </div>
-                        <div style={{ fontSize: 16, fontWeight: 800, color: '#111827' }}>
-                          {formatPrice(v.starting_price)}
-                        </div>
-                      </div>
                     </div>
                   </div>
                 ))}
