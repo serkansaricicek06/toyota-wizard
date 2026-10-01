@@ -360,7 +360,7 @@ export function DesktopResultStep({ category, businessType, selections, s3Answer
       matchedModel: carName || best?.fullName || 'Toyota Modeli',
       preferredModel: carName || best?.fullName || 'Toyota Modeli',
       selectionsSummary: allSelected.join(', '),
-      notes: 'Kullanıcı "Sizi Arayalım" butonuna tıklayarak doğrudan https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri sayfasına yönlendirildi.'
+      notes: 'Kullanıcı "Sizi Arayalım" butonuna tıklayarak doğrudan https://iletisim.toyota.com.tr/yeni-toyota/arac-secim sayfasına yönlendirildi.'
     }).catch(err => console.warn('Lead tracking error:', err));
 
     trackWizardStep({
@@ -520,7 +520,7 @@ export function DesktopResultStep({ category, businessType, selections, s3Answer
                   Aracı inceleyin
                 </a>
                 <a
-                  href="https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri"
+                  href="https://iletisim.toyota.com.tr/yeni-toyota/arac-secim"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => handleCallRequest(best.fullName)}
@@ -682,7 +682,7 @@ export function DesktopResultStep({ category, businessType, selections, s3Answer
                     Aracı inceleyin
                   </a>
                   <a
-                    href="https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri"
+                    href="https://iletisim.toyota.com.tr/yeni-toyota/arac-secim"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => handleCallRequest(second.fullName)}
@@ -851,7 +851,7 @@ export function MobileResultStep({ category, businessType, selections, s3Answers
       matchedModel: carName || best?.fullName || 'Toyota Modeli',
       preferredModel: carName || best?.fullName || 'Toyota Modeli',
       selectionsSummary: allSelected.join(', '),
-      notes: 'Kullanıcı "Sizi Arayalım" butonuna tıklayarak doğrudan https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri sayfasına yönlendirildi.'
+      notes: 'Kullanıcı "Sizi Arayalım" butonuna tıklayarak doğrudan https://iletisim.toyota.com.tr/yeni-toyota/arac-secim sayfasına yönlendirildi.'
     }).catch(err => console.warn('Lead tracking error:', err));
 
     trackWizardStep({
@@ -994,7 +994,7 @@ export function MobileResultStep({ category, businessType, selections, s3Answers
               Aracı inceleyin
             </a>
             <a
-              href="https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri"
+              href="https://iletisim.toyota.com.tr/yeni-toyota/arac-secim"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => handleCallRequest(best.fullName)}
@@ -1122,7 +1122,7 @@ export function MobileResultStep({ category, businessType, selections, s3Answers
                 Aracı inceleyin
               </a>
               <a
-                href="https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri"
+                href="https://iletisim.toyota.com.tr/yeni-toyota/arac-secim"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => handleCallRequest(second.fullName)}
