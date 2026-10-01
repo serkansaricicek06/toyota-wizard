@@ -374,10 +374,6 @@ export function DesktopResultStep({ category, businessType, selections, s3Answer
       matchedVehicle: carName || best?.fullName || '',
       isExit: false
     });
-
-    if (typeof window !== 'undefined') {
-      window.open('https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri', '_blank', 'noopener,noreferrer');
-    }
   };
 
   const handleShare = () => {
@@ -523,7 +519,10 @@ export function DesktopResultStep({ category, businessType, selections, s3Answer
                 >
                   Aracı inceleyin
                 </a>
-                <button
+                <a
+                  href="https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => handleCallRequest(best.fullName)}
                   className="dt-outline-btn dt-focusable"
                   style={{
@@ -535,11 +534,16 @@ export function DesktopResultStep({ category, businessType, selections, s3Answer
                     color: '#282830',
                     fontSize: 15,
                     fontWeight: 600,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxSizing: 'border-box'
                   }}
                 >
                   Sizi Arayalım
-                </button>
+                </a>
               </div>
 
               {/* Criteria details */}
@@ -677,7 +681,10 @@ export function DesktopResultStep({ category, businessType, selections, s3Answer
                   >
                     Aracı inceleyin
                   </a>
-                  <button
+                  <a
+                    href="https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => handleCallRequest(second.fullName)}
                     className="dt-outline-btn dt-focusable"
                     style={{
@@ -689,11 +696,16 @@ export function DesktopResultStep({ category, businessType, selections, s3Answer
                       cursor: 'pointer',
                       fontSize: 15,
                       fontWeight: 600,
-                      color: '#282830'
+                      color: '#282830',
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxSizing: 'border-box'
                     }}
                   >
                     Sizi Arayalım
-                  </button>
+                  </a>
                 </div>
 
                 {/* Criteria details */}
@@ -853,10 +865,6 @@ export function MobileResultStep({ category, businessType, selections, s3Answers
       matchedVehicle: carName || best?.fullName || '',
       isExit: false
     });
-
-    if (typeof window !== 'undefined') {
-      window.open('https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri', '_blank', 'noopener,noreferrer');
-    }
   };
 
   const handleShare = () => {
@@ -985,7 +993,10 @@ export function MobileResultStep({ category, businessType, selections, s3Answers
             >
               Aracı inceleyin
             </a>
-            <button
+            <a
+              href="https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => handleCallRequest(best.fullName)}
               style={{
                 flex: 1,
@@ -996,11 +1007,16 @@ export function MobileResultStep({ category, businessType, selections, s3Answers
                 color: '#282830',
                 fontSize: 15,
                 fontWeight: 600,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxSizing: 'border-box'
               }}
             >
               Sizi Arayalım
-            </button>
+            </a>
           </div>
 
           {allSelected.length > 0 && (
@@ -1105,7 +1121,10 @@ export function MobileResultStep({ category, businessType, selections, s3Answers
               >
                 Aracı inceleyin
               </a>
-              <button
+              <a
+                href="https://iletisim.toyota.com.tr/yeni-toyota/iletisim-bilgileri"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => handleCallRequest(second.fullName)}
                 style={{
                   flex: 1,
@@ -1116,11 +1135,16 @@ export function MobileResultStep({ category, businessType, selections, s3Answers
                   color: '#282830',
                   fontSize: 15,
                   fontWeight: 600,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxSizing: 'border-box'
                 }}
               >
                 Sizi Arayalım
-              </button>
+              </a>
             </div>
           </div>
         )}
