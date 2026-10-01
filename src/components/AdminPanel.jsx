@@ -138,6 +138,14 @@ function PhoneIcon({ size = 14, color = 'currentColor' }) {
   );
 }
 
+function SearchIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill={color} style={{ display: 'inline-block', verticalAlign: '-2px' }}>
+      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+    </svg>
+  );
+}
+
 
 // Helper to extract tab from browser pathname
 function getTabFromUrl() {
@@ -161,6 +169,21 @@ const handleImgError = (e) => {
     e.currentTarget.src = DEFAULT_CAR_FALLBACK;
   }
 };
+
+function getPageNumbers(current, total) {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+  const pages = [];
+  if (current <= 4) {
+    pages.push(1, 2, 3, 4, 5, '...', total);
+  } else if (current >= total - 3) {
+    pages.push(1, '...', total - 4, total - 3, total - 2, total - 1, total);
+  } else {
+    pages.push(1, '...', current - 1, current, current + 1, '...', total);
+  }
+  return pages;
+}
 
 export function AdminPanel({ onExit }) {
   // Authentication State
@@ -231,6 +254,10 @@ export function AdminPanel({ onExit }) {
   const [vehicles, setVehicles] = useState([]);
   const [rules, setRules] = useState([]);
   const [leads, setLeads] = useState([]);
+  const [leadSearch, setLeadSearch] = useState('');
+  const [leadStatusFilter, setLeadStatusFilter] = useState('all');
+  const [leadPage, setLeadPage] = useState(1);
+  const [leadPageSize, setLeadPageSize] = useState(10);
   const [users, setUsers] = useState([]);
   const [settings, setSettings] = useState({
     meta_title: '',
@@ -654,6 +681,60 @@ export function AdminPanel({ onExit }) {
     await adminUpdateLeadStatus(leadId, newStatus, token);
     setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
     showAlert('Talep durumu güncellendi.');
+  };
+
+  // Export Leads to CSV / Excel
+  const handleExportLeadsCSV = (exportList = leads) => {
+    if (!exportList || exportList.length === 0) {
+      showAlert('Dışa aktarılacak müşteri talebi bulunamadı.', 'error');
+      return;
+    }
+
+    const headers = [
+      'Talep No',
+      'Kayıt Tarihi',
+      'Müşteri Adı Soyadı',
+      'Telefon',
+      'E-Posta',
+      'İl / Şehir',
+      'İlgilenilen Model',
+      'Talep Durumu',
+      'Müşteri Notu / Talep Detayı'
+    ];
+
+    const rows = exportList.map((l, index) => {
+      const modelName = l.preferred_model || l.preferredModel || l.matched_model || l.matchedModel || l.vehicle_name || l.vehicle_id || 'Belirtilmedi';
+      const customerName = l.full_name || l.fullName || 'Ziyaretçi';
+      const phone = l.phone || '-';
+      const email = l.email || '-';
+      const city = l.city || '-';
+      const status = l.status || 'Yeni';
+      const leadDate = l.created_at || l.createdAt ? new Date(l.created_at || l.createdAt).toLocaleString('tr-TR') : '-';
+      const notes = (l.notes || '').replace(/"/g, '""').replace(/\r?\n|\r/g, ' ');
+
+      return [
+        l.id || (index + 1),
+        `"${leadDate}"`,
+        `"${customerName.replace(/"/g, '""')}"`,
+        `"${phone}"`,
+        `"${email.replace(/"/g, '""')}"`,
+        `"${city.replace(/"/g, '""')}"`,
+        `"${modelName.replace(/"/g, '""')}"`,
+        `"${status}"`,
+        `"${notes}"`
+      ];
+    });
+
+    const csvContent = '\uFEFF' + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `toyota_musteri_talepleri_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showAlert(`${rows.length} müşteri talebi Excel/CSV olarak başarıyla indirildi.`);
   };
 
   // Save Matrix Rule Cell
@@ -3331,117 +3412,524 @@ export function AdminPanel({ onExit }) {
           {/* ======================================================== */}
           {/* 5. LEADS MANAGEMENT SECTION                              */}
           {/* ======================================================== */}
-          {activeNav === 'leads' && (
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: 16, color: '#111827', fontWeight: 800 }}>
-                    Müşteri Başvuru Talepleri
-                  </h3>
-                  <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6B7280' }}>
-                    Testi tamamlayıp bayiden teklif veya aranma talep eden müşteriler.
-                  </p>
+          {/* ======================================================== */}
+          {/* 5. LEADS MANAGEMENT SECTION                              */}
+          {/* ======================================================== */}
+          {activeNav === 'leads' && (() => {
+            const leadStatusCounts = {
+              all: leads.length,
+              Yeni: leads.filter(l => (l.status || 'Yeni') === 'Yeni').length,
+              Arandı: leads.filter(l => l.status === 'Arandı').length,
+              Görüşüldü: leads.filter(l => l.status === 'Görüşüldü').length,
+              Tamamlandı: leads.filter(l => l.status === 'Tamamlandı').length
+            };
+
+            const filteredLeads = leads.filter(l => {
+              if (leadStatusFilter !== 'all' && (l.status || 'Yeni') !== leadStatusFilter) {
+                return false;
+              }
+              if (leadSearch.trim()) {
+                const q = leadSearch.toLowerCase().trim();
+                const name = (l.full_name || l.fullName || '').toLowerCase();
+                const phone = (l.phone || '').toLowerCase();
+                const email = (l.email || '').toLowerCase();
+                const model = (l.preferred_model || l.preferredModel || l.matched_model || l.matchedModel || l.vehicle_name || l.vehicle_id || '').toLowerCase();
+                const notes = (l.notes || '').toLowerCase();
+                const city = (l.city || '').toLowerCase();
+                return name.includes(q) || phone.includes(q) || email.includes(q) || model.includes(q) || notes.includes(q) || city.includes(q);
+              }
+              return true;
+            });
+
+            const totalLeadPages = Math.max(1, Math.ceil(filteredLeads.length / leadPageSize));
+            const currentLeadPage = Math.min(leadPage, totalLeadPages);
+            const startIdx = (currentLeadPage - 1) * leadPageSize;
+            const paginatedLeads = filteredLeads.slice(startIdx, startIdx + leadPageSize);
+
+            const getStatusBadgeStyle = (status) => {
+              switch (status) {
+                case 'Arandı':
+                  return { bg: '#FFFBEB', color: '#D97706', border: '#FDE68A' };
+                case 'Görüşüldü':
+                  return { bg: '#EFF6FF', color: '#2563EB', border: '#BFDBFE' };
+                case 'Tamamlandı':
+                  return { bg: '#ECFDF5', color: '#059669', border: '#A7F3D0' };
+                case 'Yeni':
+                default:
+                  return { bg: '#FEF2F2', color: '#DC2626', border: '#FECACA' };
+              }
+            };
+
+            return (
+              <div>
+                {/* Header & Quick Actions */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: 16, color: '#111827', fontWeight: 800 }}>
+                      Müşteri Başvuru Talepleri
+                    </h3>
+                    <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6B7280' }}>
+                      Testi tamamlayıp bayiden teklif veya aranma talep eden müşteriler.
+                    </p>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{
+                      background: '#FFFFFF',
+                      border: '1px solid #E5E7EB',
+                      padding: '7px 14px',
+                      borderRadius: 8,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color: '#374151',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6
+                    }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#EB0A1E', display: 'inline-block' }}></span>
+                      <span>
+                        {filteredLeads.length !== leads.length
+                          ? `${filteredLeads.length} / ${leads.length} Talep`
+                          : `Toplam ${leads.length} Talep`}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleExportLeadsCSV(filteredLeads.length > 0 ? filteredLeads : leads)}
+                      disabled={leads.length === 0}
+                      style={{
+                        background: '#111827',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        padding: '7px 16px',
+                        borderRadius: 8,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        cursor: leads.length === 0 ? 'not-allowed' : 'pointer',
+                        opacity: leads.length === 0 ? 0.6 : 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                        transition: 'background 0.2s'
+                      }}
+                      onMouseEnter={(e) => { if (leads.length > 0) e.currentTarget.style.background = '#1F2937'; }}
+                      onMouseLeave={(e) => { if (leads.length > 0) e.currentTarget.style.background = '#111827'; }}
+                      title="Listeyi Excel uyumlu CSV olarak dışa aktar"
+                    >
+                      <DownloadIcon size={14} color="#FFFFFF" />
+                      <span>Verileri Dışarı Aktar (Excel / CSV)</span>
+                    </button>
+                  </div>
                 </div>
 
+                {/* Filter and Search Bar */}
                 <div style={{
                   background: '#FFFFFF',
+                  borderRadius: 10,
                   border: '1px solid #E5E7EB',
-                  padding: '6px 12px',
-                  borderRadius: 6,
-                  fontSize: 12,
-                  fontWeight: 700
+                  padding: '12px 16px',
+                  marginBottom: 16,
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 12,
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
                 }}>
-                  Toplam {leads.length} Talep
+                  {/* Search input */}
+                  <div style={{ position: 'relative', flex: '1 1 260px', maxWidth: 400 }}>
+                    <div style={{
+                      position: 'absolute',
+                      left: 12,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      pointerEvents: 'none',
+                      color: '#9CA3AF',
+                      display: 'flex'
+                    }}>
+                      <SearchIcon size={14} color="#9CA3AF" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Müşteri adı, tel, e-posta veya model ara..."
+                      value={leadSearch}
+                      onChange={(e) => {
+                        setLeadSearch(e.target.value);
+                        setLeadPage(1);
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '7px 32px 7px 34px',
+                        borderRadius: 7,
+                        border: '1px solid #D1D5DB',
+                        fontSize: 12,
+                        color: '#111827',
+                        outline: 'none',
+                        boxSizing: 'border-box'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#EB0A1E'}
+                      onBlur={(e) => e.target.style.borderColor = '#D1D5DB'}
+                    />
+                    {leadSearch && (
+                      <button
+                        type="button"
+                        onClick={() => { setLeadSearch(''); setLeadPage(1); }}
+                        style={{
+                          position: 'absolute',
+                          right: 8,
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          background: 'transparent',
+                          border: 'none',
+                          color: '#9CA3AF',
+                          cursor: 'pointer',
+                          padding: 2,
+                          display: 'flex'
+                        }}
+                      >
+                        <CloseIcon size={13} color="#6B7280" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Status Filter Badges */}
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+                    {[
+                      { key: 'all', label: 'Tümü', count: leadStatusCounts.all },
+                      { key: 'Yeni', label: 'Yeni', count: leadStatusCounts.Yeni, bg: '#FEF2F2', color: '#DC2626' },
+                      { key: 'Arandı', label: 'Arandı', count: leadStatusCounts.Arandı, bg: '#FFFBEB', color: '#D97706' },
+                      { key: 'Görüşüldü', label: 'Görüşüldü', count: leadStatusCounts.Görüşüldü, bg: '#EFF6FF', color: '#2563EB' },
+                      { key: 'Tamamlandı', label: 'Tamamlandı', count: leadStatusCounts.Tamamlandı, bg: '#ECFDF5', color: '#059669' }
+                    ].map(tab => {
+                      const active = leadStatusFilter === tab.key;
+                      return (
+                        <button
+                          key={tab.key}
+                          type="button"
+                          onClick={() => { setLeadStatusFilter(tab.key); setLeadPage(1); }}
+                          style={{
+                            background: active ? (tab.bg || '#111827') : '#F9FAFB',
+                            color: active ? (tab.color || '#FFFFFF') : '#4B5563',
+                            border: `1px solid ${active ? (tab.color || '#111827') : '#E5E7EB'}`,
+                            padding: '5px 12px',
+                            borderRadius: 18,
+                            fontSize: 12,
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 6,
+                            transition: 'all 0.15s'
+                          }}
+                        >
+                          <span>{tab.label}</span>
+                          <span style={{
+                            background: active ? 'rgba(0,0,0,0.08)' : '#E5E7EB',
+                            color: active ? 'inherit' : '#6B7280',
+                            padding: '1px 6px',
+                            borderRadius: 10,
+                            fontSize: 11,
+                            fontWeight: 800
+                          }}>
+                            {tab.count}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Table Container */}
+                <div style={{
+                  background: '#FFFFFF',
+                  borderRadius: 10,
+                  border: '1px solid #E5E7EB',
+                  overflow: 'hidden',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+                }}>
+                  {leads.length === 0 ? (
+                    <div style={{ padding: '40px 20px', textAlign: 'center', color: '#9CA3AF' }}>
+                      Henüz kayıtlı müşteri talebi bulunmuyor.
+                    </div>
+                  ) : filteredLeads.length === 0 ? (
+                    <div style={{ padding: '40px 20px', textAlign: 'center', color: '#6B7280' }}>
+                      <p style={{ margin: '0 0 10px', fontSize: 14, fontWeight: 600 }}>Arama kriterlerinize uygun talep bulunamadı.</p>
+                      <button
+                        type="button"
+                        onClick={() => { setLeadSearch(''); setLeadStatusFilter('all'); setLeadPage(1); }}
+                        style={{
+                          background: '#FFFFFF',
+                          border: '1px solid #D1D5DB',
+                          padding: '6px 14px',
+                          borderRadius: 6,
+                          fontSize: 12,
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          color: '#111827'
+                        }}
+                      >
+                        Filtreleri Temizle
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: 13 }}>
+                          <thead>
+                            <tr style={{ background: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
+                              <th style={{ padding: '12px 14px', color: '#6B7280', width: 44, fontWeight: 700, fontSize: 12 }}>#</th>
+                              <th style={{ padding: '12px 16px', color: '#4B5563', fontWeight: 700 }}>Müşteri Adı</th>
+                              <th style={{ padding: '12px 16px', color: '#4B5563', fontWeight: 700 }}>İletişim</th>
+                              <th style={{ padding: '12px 16px', color: '#4B5563', fontWeight: 700 }}>İlgilenilen Model</th>
+                              <th style={{ padding: '12px 16px', color: '#4B5563', fontWeight: 700 }}>Tarih</th>
+                              <th style={{ padding: '12px 16px', color: '#4B5563', fontWeight: 700 }}>Durum</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {paginatedLeads.map((l, idx) => {
+                              const rowNumber = startIdx + idx + 1;
+                              const modelName = l.preferred_model || l.preferredModel || l.matched_model || l.matchedModel || l.vehicle_name || l.vehicle_id || 'Model Belirtilmedi';
+                              const customerName = l.full_name || l.fullName || 'Ziyaretçi';
+                              const leadDate = l.created_at || l.createdAt ? new Date(l.created_at || l.createdAt).toLocaleString('tr-TR') : '-';
+                              const currentStatus = l.status || 'Yeni';
+                              const statusStyle = getStatusBadgeStyle(currentStatus);
+
+                              return (
+                                <tr key={l.id || idx} style={{ borderBottom: '1px solid #F3F4F6' }}>
+                                  <td style={{ padding: '12px 14px', color: '#9CA3AF', fontSize: 12, fontWeight: 700 }}>
+                                    {rowNumber}
+                                  </td>
+                                  <td style={{ padding: '12px 16px', fontWeight: 700, color: '#111827' }}>
+                                    {customerName}
+                                    {l.city && (
+                                      <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 500, marginTop: 2 }}>
+                                        📍 {l.city}
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td style={{ padding: '12px 16px', color: '#4B5563' }}>
+                                    <div style={{ fontWeight: 600, color: '#111827' }}>{l.phone}</div>
+                                    {l.email && <div style={{ fontSize: 11, color: '#9CA3AF', marginTop: 2 }}>{l.email}</div>}
+                                  </td>
+                                  <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 600 }}>
+                                    <span style={{
+                                      background: '#FEE2E2',
+                                      color: '#991B1B',
+                                      padding: '3px 8px',
+                                      borderRadius: 4,
+                                      fontSize: 12,
+                                      fontWeight: 700,
+                                      display: 'inline-block'
+                                    }}>
+                                      {modelName}
+                                    </span>
+                                    {l.notes && (
+                                      <div style={{ fontSize: 11, color: '#6B7280', marginTop: 4, maxWidth: 320, whiteSpace: 'normal', lineHeight: 1.4 }}>
+                                        {l.notes}
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td style={{ padding: '12px 16px', color: '#6B7280', fontSize: 12 }}>
+                                    {leadDate}
+                                  </td>
+                                  <td style={{ padding: '12px 16px' }}>
+                                    <select
+                                      value={currentStatus}
+                                      onChange={(e) => handleStatusChange(l.id, e.target.value)}
+                                      style={{
+                                        background: statusStyle.bg,
+                                        border: `1px solid ${statusStyle.border}`,
+                                        color: statusStyle.color,
+                                        padding: '4px 10px',
+                                        borderRadius: 6,
+                                        fontSize: 12,
+                                        fontWeight: 700,
+                                        cursor: 'pointer',
+                                        outline: 'none'
+                                      }}
+                                    >
+                                      <option value="Yeni">Yeni</option>
+                                      <option value="Arandı">Arandı</option>
+                                      <option value="Görüşüldü">Görüşüldü</option>
+                                      <option value="Tamamlandı">Tamamlandı</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Pagination Bar */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '12px 18px',
+                        background: '#FAFAFA',
+                        borderTop: '1px solid #E5E7EB',
+                        flexWrap: 'wrap',
+                        gap: 12
+                      }}>
+                        {/* Summary Info */}
+                        <div style={{ fontSize: 12, color: '#4B5563', fontWeight: 600 }}>
+                          Toplam <strong style={{ color: '#111827' }}>{filteredLeads.length}</strong> talepten{' '}
+                          <strong style={{ color: '#111827' }}>{startIdx + 1} - {Math.min(startIdx + leadPageSize, filteredLeads.length)}</strong> arası gösteriliyor
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                          {/* Page size dropdown */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#4B5563' }}>
+                            <span>Sayfa Başına:</span>
+                            <select
+                              value={leadPageSize}
+                              onChange={(e) => {
+                                setLeadPageSize(Number(e.target.value));
+                                setLeadPage(1);
+                              }}
+                              style={{
+                                background: '#FFFFFF',
+                                border: '1px solid #D1D5DB',
+                                borderRadius: 6,
+                                padding: '4px 8px',
+                                fontSize: 12,
+                                fontWeight: 600,
+                                color: '#111827',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <option value={5}>5</option>
+                              <option value={10}>10</option>
+                              <option value={25}>25</option>
+                              <option value={50}>50</option>
+                              <option value={100}>100</option>
+                            </select>
+                          </div>
+
+                          {/* Navigation Buttons */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                            {/* First Page */}
+                            <button
+                              type="button"
+                              onClick={() => setLeadPage(1)}
+                              disabled={currentLeadPage === 1}
+                              style={{
+                                background: '#FFFFFF',
+                                border: '1px solid #D1D5DB',
+                                color: currentLeadPage === 1 ? '#D1D5DB' : '#374151',
+                                padding: '5px 9px',
+                                borderRadius: 6,
+                                fontSize: 12,
+                                fontWeight: 600,
+                                cursor: currentLeadPage === 1 ? 'not-allowed' : 'pointer'
+                              }}
+                              title="İlk Sayfa"
+                            >
+                              «
+                            </button>
+
+                            {/* Prev Page */}
+                            <button
+                              type="button"
+                              onClick={() => setLeadPage(p => Math.max(1, p - 1))}
+                              disabled={currentLeadPage === 1}
+                              style={{
+                                background: '#FFFFFF',
+                                border: '1px solid #D1D5DB',
+                                color: currentLeadPage === 1 ? '#D1D5DB' : '#374151',
+                                padding: '5px 10px',
+                                borderRadius: 6,
+                                fontSize: 12,
+                                fontWeight: 600,
+                                cursor: currentLeadPage === 1 ? 'not-allowed' : 'pointer'
+                              }}
+                              title="Önceki Sayfa"
+                            >
+                              ‹
+                            </button>
+
+                            {/* Numbered Page Buttons */}
+                            {getPageNumbers(currentLeadPage, totalLeadPages).map((p, pIdx) => {
+                              if (p === '...') {
+                                return (
+                                  <span key={`dots-${pIdx}`} style={{ padding: '0 4px', color: '#9CA3AF', fontSize: 12 }}>
+                                    ...
+                                  </span>
+                                );
+                              }
+                              const isCurrent = p === currentLeadPage;
+                              return (
+                                <button
+                                  key={p}
+                                  type="button"
+                                  onClick={() => setLeadPage(p)}
+                                  style={{
+                                    background: isCurrent ? '#EB0A1E' : '#FFFFFF',
+                                    color: isCurrent ? '#FFFFFF' : '#374151',
+                                    border: isCurrent ? '1px solid #EB0A1E' : '1px solid #D1D5DB',
+                                    padding: '5px 10px',
+                                    borderRadius: 6,
+                                    fontSize: 12,
+                                    fontWeight: isCurrent ? 800 : 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.15s'
+                                  }}
+                                >
+                                  {p}
+                                </button>
+                              );
+                            })}
+
+                            {/* Next Page */}
+                            <button
+                              type="button"
+                              onClick={() => setLeadPage(p => Math.min(totalLeadPages, p + 1))}
+                              disabled={currentLeadPage === totalLeadPages}
+                              style={{
+                                background: '#FFFFFF',
+                                border: '1px solid #D1D5DB',
+                                color: currentLeadPage === totalLeadPages ? '#D1D5DB' : '#374151',
+                                padding: '5px 10px',
+                                borderRadius: 6,
+                                fontSize: 12,
+                                fontWeight: 600,
+                                cursor: currentLeadPage === totalLeadPages ? 'not-allowed' : 'pointer'
+                              }}
+                              title="Sonraki Sayfa"
+                            >
+                              ›
+                            </button>
+
+                            {/* Last Page */}
+                            <button
+                              type="button"
+                              onClick={() => setLeadPage(totalLeadPages)}
+                              disabled={currentLeadPage === totalLeadPages}
+                              style={{
+                                background: '#FFFFFF',
+                                border: '1px solid #D1D5DB',
+                                color: currentLeadPage === totalLeadPages ? '#D1D5DB' : '#374151',
+                                padding: '5px 9px',
+                                borderRadius: 6,
+                                fontSize: 12,
+                                fontWeight: 600,
+                                cursor: currentLeadPage === totalLeadPages ? 'not-allowed' : 'pointer'
+                              }}
+                              title="Son Sayfa"
+                            >
+                              »
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
-
-              <div style={{
-                background: '#FFFFFF',
-                borderRadius: 10,
-                border: '1px solid #E5E7EB',
-                overflow: 'hidden'
-              }}>
-                {leads.length === 0 ? (
-                  <div style={{ padding: '40px 20px', textAlign: 'center', color: '#9CA3AF' }}>
-                    Henüz kayıtlı müşteri talebi bulunmuyor.
-                  </div>
-                ) : (
-                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: 13 }}>
-                    <thead>
-                      <tr style={{ background: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
-                        <th style={{ padding: '12px 16px', color: '#4B5563' }}>Müşteri Adı</th>
-                        <th style={{ padding: '12px 16px', color: '#4B5563' }}>İletişim</th>
-                        <th style={{ padding: '12px 16px', color: '#4B5563' }}>İlgilenilen Model</th>
-                        <th style={{ padding: '12px 16px', color: '#4B5563' }}>Tarih</th>
-                        <th style={{ padding: '12px 16px', color: '#4B5563' }}>Durum</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {leads.map((l) => {
-                        const modelName = l.preferred_model || l.preferredModel || l.matched_model || l.matchedModel || l.vehicle_name || l.vehicle_id || 'Model Belirtilmedi';
-                        const customerName = l.full_name || l.fullName || 'Ziyaretçi';
-                        const leadDate = l.created_at || l.createdAt ? new Date(l.created_at || l.createdAt).toLocaleString('tr-TR') : '-';
-
-                        return (
-                          <tr key={l.id} style={{ borderBottom: '1px solid #F3F4F6' }}>
-                            <td style={{ padding: '12px 16px', fontWeight: 700, color: '#111827' }}>
-                              {customerName}
-                            </td>
-                            <td style={{ padding: '12px 16px', color: '#4B5563' }}>
-                              <div>{l.phone}</div>
-                              {l.email && <div style={{ fontSize: 11, color: '#9CA3AF' }}>{l.email}</div>}
-                            </td>
-                            <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 600 }}>
-                              <span style={{
-                                background: '#FEE2E2',
-                                color: '#991B1B',
-                                padding: '4px 8px',
-                                borderRadius: 4,
-                                fontSize: 12,
-                                fontWeight: 700,
-                                display: 'inline-block'
-                              }}>
-                                {modelName}
-                              </span>
-                              {l.notes && (
-                                <div style={{ fontSize: 11, color: '#6B7280', marginTop: 4, maxWidth: 320, whiteSpace: 'normal', lineHeight: 1.4 }}>
-                                  {l.notes}
-                                </div>
-                              )}
-                            </td>
-                            <td style={{ padding: '12px 16px', color: '#6B7280', fontSize: 12 }}>
-                              {leadDate}
-                            </td>
-                            <td style={{ padding: '12px 16px' }}>
-                              <select
-                                value={l.status || 'Yeni'}
-                                onChange={(e) => handleStatusChange(l.id, e.target.value)}
-                                style={{
-                                  background: '#FFFFFF',
-                                  border: '1px solid #D1D5DB',
-                                  color: '#111827',
-                                  padding: '4px 8px',
-                                  borderRadius: 6,
-                                  fontSize: 12,
-                                  fontWeight: 600,
-                                  cursor: 'pointer'
-                                }}
-                              >
-                                <option value="Yeni">Yeni</option>
-                                <option value="Arandı">Arandı</option>
-                                <option value="Görüşüldü">Görüşüldü</option>
-                                <option value="Tamamlandı">Tamamlandı</option>
-                              </select>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* ======================================================== */}
           {/* 6. SEO & SITE SETTINGS SECTION                           */}
