@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { ToyotaLogo } from './Icons';
 import {
   adminLogin,
@@ -146,6 +146,57 @@ function SearchIcon({ size = 14, color = 'currentColor' }) {
   );
 }
 
+function GridIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill={color} style={{ display: 'inline-block', verticalAlign: '-2px' }}>
+      <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z"/>
+    </svg>
+  );
+}
+
+function CarFrontIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill={color} style={{ display: 'inline-block', verticalAlign: '-2px' }}>
+      <path d="M4 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0m10 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2zM4.862 4.276 3.906 6.19a.51.51 0 0 0 .497.731c.91-.073 2.35-.17 3.597-.17s2.688.097 3.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 10.691 4H5.309a.5.5 0 0 0-.447.276"/>
+      <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.315.38.396.797.379 1.348 1.173 1.348 2.091v4.3c0 .613-.352 1.15-.866 1.408l-.208.104a.75.75 0 0 1-.674 0L14 13.5v1a1.5 1.5 0 0 1-1.5 1.5h-1A1.5 1.5 0 0 1 10 14.5v-1H6v1A1.5 1.5 0 0 1 4.5 16h-1A1.5 1.5 0 0 1 2 14.5v-1l-.246.162a.75.75 0 0 1-.674 0l-.208-.104A1.6 1.6 0 0 1 0 12.15v-4.3c0-.918.55-1.712 1.348-2.09.17-.082.305-.222.38-.397zM5 3a1 1 0 0 0-.92.606l-.768 1.793A2 2 0 0 0 3 6.15v5.85a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V6.15c0-.284-.06-.563-.176-.81l-.768-1.793A1 1 0 0 0 11 3z"/>
+    </svg>
+  );
+}
+
+function TruckIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill={color} style={{ display: 'inline-block', verticalAlign: '-2px' }}>
+      <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-4 0 1 1 0 0 1-1-1zm1 1v7a.5.5 0 0 0 .5.5h.08a2 2 0 0 1 3.84 0h5.16a2 2 0 0 1 3.84 0h.58a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 12.02 6H11V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5M3 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+    </svg>
+  );
+}
+
+function TagIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill={color} style={{ display: 'inline-block', verticalAlign: '-2px' }}>
+      <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-4.386 1.066a1.5 1.5 0 0 1 0-2.122l4.89-4.89a1.5 1.5 0 0 1 1.06-.44H13.5A2.5 2.5 0 0 1 16 2.5v5.939a1.5 1.5 0 0 1-.44 1.06l-6.879 6.88a1.5 1.5 0 0 1-2.121 0zM1.828 3.237a.5.5 0 0 0 0 .707l6.879 6.88a.5.5 0 0 0 .707 0l6.88-6.88a.5.5 0 0 0 .146-.353V2.5a1.5 1.5 0 0 0-1.5-1.5H7.561a.5.5 0 0 0-.353.146z"/>
+    </svg>
+  );
+}
+
+function QuestionCircleIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill={color} style={{ display: 'inline-block', verticalAlign: '-2px' }}>
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+      <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+    </svg>
+  );
+}
+
+function SlidersIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill={color} style={{ display: 'inline-block', verticalAlign: '-2px' }}>
+      <path fillRule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1z"/>
+    </svg>
+  );
+}
+
+
 
 // Helper to extract tab from browser pathname
 function getTabFromUrl() {
@@ -278,10 +329,13 @@ export function AdminPanel({ onExit }) {
   // Sync State
   const [syncing, setSyncing] = useState(false);
 
-  // Matrix Cell Editor
+  // Matrix Cell Editor & Dynamic Controls
   const [activeCell, setActiveCell] = useState(null);
   const [cellWeight, setCellWeight] = useState(20);
   const [cellBadge, setCellBadge] = useState('');
+  const [matrixFilter, setMatrixFilter] = useState('all'); // 'all' | 'binek' | 'commercial'
+  const [matrixSourceTypeFilter, setMatrixSourceTypeFilter] = useState('all'); // 'all' | 'question' | 'category'
+  const [matrixSearch, setMatrixSearch] = useState('');
 
   // ----------------------------------------------------
   // SIMULATOR STATE (DYNAMIC & TRANSPARENT BREAKDOWN)
@@ -748,28 +802,53 @@ export function AdminPanel({ onExit }) {
         source_label: activeCell.source_label,
         vehicle_id: activeCell.vehicle_id,
         weight: w,
+        score: w,
         reason_badge: cellBadge
       }, token);
 
       setRules(prev => {
-        const filtered = prev.filter(r => !(r.source_id === activeCell.source_id && r.vehicle_id === activeCell.vehicle_id));
+        const filtered = prev.filter(r => {
+          const rSrcId = String(r.sourceId !== undefined ? r.sourceId : r.source_id);
+          const rVehId = String(r.vehicleId !== undefined ? r.vehicleId : r.vehicle_id);
+          const rSrcType = r.sourceType !== undefined ? r.sourceType : r.source_type;
+          const rSrcLabel = r.sourceLabel !== undefined ? r.sourceLabel : r.source_label;
+          const actSrcId = String(activeCell.source_id);
+          const actVehId = String(activeCell.vehicle_id);
+
+          const isMatch = (rVehId === actVehId) && (
+            rSrcId === actSrcId ||
+            (rSrcType === activeCell.source_type && rSrcLabel === activeCell.source_label)
+          );
+          return !isMatch;
+        });
+
         if (w > 0) {
           return [...filtered, {
             source_type: activeCell.source_type,
+            sourceType: activeCell.source_type,
             source_id: activeCell.source_id,
+            sourceId: activeCell.source_id,
             source_label: activeCell.source_label,
+            sourceLabel: activeCell.source_label,
             vehicle_id: activeCell.vehicle_id,
+            vehicleId: activeCell.vehicle_id,
             weight: w,
-            reason_badge: cellBadge
+            score: w,
+            reason_badge: cellBadge,
+            reasonBadge: cellBadge
           }];
         }
         return filtered;
       });
 
-      showAlert('Kural puanı güncellendi.');
+      showAlert('Kural puanı başarıyla güncellendi.');
       setActiveCell(null);
+      // Arka planda sunucu senkronizasyonunu tazele
+      adminGetRules(token).then(rData => {
+        if (rData?.rules) setRules(rData.rules);
+      }).catch(() => {});
     } catch (err) {
-      showAlert(err.message, 'error');
+      showAlert(err.message || 'Kural kaydedilemedi.', 'error');
     }
   };
 
@@ -1108,28 +1187,177 @@ export function AdminPanel({ onExit }) {
 
   // Helpers
   const getRulesForQuestion = (q) => {
-    return rules.filter(r => r.source_type === 'question' && (r.source_id?.includes(q.id) || r.reason_badge === q.title));
+    return (rules || []).filter(r => {
+      const rType = r.sourceType || r.source_type;
+      const rId = r.sourceId || r.source_id || '';
+      const rBadge = r.reasonBadge || r.reason_badge || '';
+      return rType === 'question' && (rId.includes(q.id) || rBadge === q.title);
+    });
   };
 
   const getRulesForCategory = (c) => {
-    return rules.filter(r => r.source_type === 'category' && (r.source_id?.includes(String(c.id)) || r.source_label === c.name || r.reason_badge === c.name));
+    return (rules || []).filter(r => {
+      const rType = r.sourceType || r.source_type;
+      const rId = r.sourceId || r.source_id || '';
+      const rLabel = r.sourceLabel || r.source_label || '';
+      const rBadge = r.reasonBadge || r.reason_badge || '';
+      return rType === 'category' && (rId.includes(String(c.id)) || rLabel.toLowerCase() === c.name.toLowerCase() || rBadge === c.name);
+    });
   };
 
-  // Matrix distinct sources
-  const matrixSources = [
-    { id: 'lifestyle:Şehir Hayatı', label: 'Yaşam: Şehir Hayatı', type: 'question' },
-    { id: 'lifestyle:Macera/Doğa Aktiviteleri', label: 'Yaşam: Macera/Doğa', type: 'question' },
-    { id: 'lifestyle:Aile ve Çocuklu Yaşam', label: 'Yaşam: Aile & Çocuk', type: 'question' },
-    { id: 'seats:1-2 Kişi', label: 'Kapasite: 1-2 Kişi', type: 'question' },
-    { id: 'seats:3-4 Kişi', label: 'Kapasite: 3-4 Kişi', type: 'question' },
-    { id: 'seats:5 ve üzeri', label: 'Kapasite: 5 ve üzeri', type: 'question' },
-    { id: 'cat:0:Dar alanda rahat park', label: 'Balon: Dar Alanda Park', type: 'category' },
-    { id: 'cat:1:Uzun yolda konforlu sürüş', label: 'Balon: Uzun Yol Konforu', type: 'category' },
-    { id: 'cat:2:Zor arazilerde dayanıklı', label: 'Balon: Zorlu Arazi (4x4)', type: 'category' },
-    { id: 'cat:8:Geniş yükleme alanı', label: 'Balon: Geniş Bagaj / Yük', type: 'category' },
-    { id: 'cat:9:Yakıt tüketimi', label: 'Balon: Düşük Yakıt (5L altı)', type: 'category' },
-    { id: 'cat:10:Elektrikli kullanım desteği (Hibrit)', label: 'Balon: Hibrit Motor', type: 'category' }
-  ];
+  // =========================================================================
+  // DYNAMIC MATCHING MATRIX SOURCES (AUTOMATICALLY DERIVED FROM QUESTIONS & CATEGORIES)
+  // =========================================================================
+  const dynamicMatrixSources = useMemo(() => {
+    const list = [];
+
+    // 1. Profil Sorularından (Questions & Options)
+    (questions || []).forEach(q => {
+      if (q.id === 'intro' || q.order_num === 1) return;
+
+      const qCategory = (q.category_type || q.categoryType || 'all').toLowerCase();
+      const isCommercial = qCategory.includes('ticari') || qCategory.includes('commercial');
+      const isBinek = qCategory.includes('binek');
+      const categoryGroup = isCommercial ? 'commercial' : (isBinek ? 'binek' : 'all');
+
+      let optionsList = [];
+      if (Array.isArray(q.options)) {
+        optionsList = q.options.map(o => typeof o === 'string' ? o.trim() : (o.title || o.Title || '').trim()).filter(Boolean);
+      } else if (typeof q.options === 'string') {
+        try {
+          const parsed = JSON.parse(q.options);
+          if (Array.isArray(parsed)) {
+            optionsList = parsed.map(o => (typeof o === 'string' ? o : (o.title || o.Title || '')).trim()).filter(Boolean);
+          }
+        } catch {}
+      }
+
+      optionsList.forEach(optTitle => {
+        const canonicalSourceId = `${q.id}:${optTitle}`;
+
+        list.push({
+          id: canonicalSourceId,
+          sourceId: canonicalSourceId,
+          questionId: q.id,
+          questionTitle: q.title || 'Profil Sorusu',
+          optionTitle: optTitle,
+          label: `${q.title ? (q.title.length > 24 ? q.title.slice(0, 24) + '…' : q.title) : 'Soru'}: ${optTitle}`,
+          subLabel: optTitle,
+          type: 'question',
+          categoryType: categoryGroup,
+          orderNum: q.order_num || 99
+        });
+      });
+    });
+
+    // 2. Kategori & Özellik Balonlarından (Categories - Hem Binek Hem Ticari)
+    (categories || []).forEach(c => {
+      const cType = (c.vehicle_type || c.vehicleType || 'binek').toLowerCase();
+      const isCommercial = cType.includes('ticari') || cType.includes('commercial');
+      const categoryGroup = isCommercial ? 'commercial' : 'binek';
+
+      // Veritabanındaki kurallarla tam eşleşen source_id varsa onu koru
+      const existing = (rules || []).find(r => {
+        const rSrcType = r.sourceType || r.source_type;
+        const rSrcId = r.sourceId || r.source_id || '';
+        const rSrcLabel = r.sourceLabel || r.source_label || '';
+        return rSrcType === 'category' && (
+          rSrcId === `cat:${c.id}:${c.name}` ||
+          rSrcId === String(c.id) ||
+          rSrcLabel.toLowerCase() === c.name.toLowerCase() ||
+          rSrcId.includes(c.name)
+        );
+      });
+
+      const canonicalSourceId = existing?.sourceId || existing?.source_id || `cat:${c.id}:${c.name}`;
+
+      list.push({
+        id: canonicalSourceId,
+        sourceId: canonicalSourceId,
+        categoryId: c.id,
+        categoryName: c.name,
+        label: `Balon: ${c.name}`,
+        subLabel: c.name,
+        type: 'category',
+        categoryType: categoryGroup,
+        color: c.color || (isCommercial ? '#2563EB' : '#EB0A1E'),
+        icon: c.icon || '●'
+      });
+    });
+
+    return list;
+  }, [questions, categories, rules]);
+
+  // Hücre kuralını eşleştiren yardımcı fonksiyon (camelCase ve snake_case uyumlu)
+  const getMatrixCellRule = (src, vehicleId) => {
+    return (rules || []).find(r => {
+      const rVehId = r.vehicleId || r.vehicle_id;
+      if (rVehId !== vehicleId) return false;
+      const rSrcId = r.sourceId || r.source_id || '';
+      const rSrcType = r.sourceType || r.source_type || '';
+      const rSrcLabel = r.sourceLabel || r.source_label || '';
+      const rReason = r.reasonBadge || r.reason_badge || '';
+
+      if (src.type === 'question') {
+        return (
+          rSrcId === src.id ||
+          rSrcId === `${src.questionId}:${src.optionTitle}` ||
+          (rSrcType === 'question' && (
+            (rSrcLabel && rSrcLabel.toLowerCase() === src.optionTitle.toLowerCase()) ||
+            rSrcId.includes(src.optionTitle) ||
+            (rReason && rReason.toLowerCase() === src.optionTitle.toLowerCase())
+          ))
+        );
+      } else {
+        return (
+          rSrcId === src.id ||
+          rSrcId === `cat:${src.categoryId}:${src.categoryName}` ||
+          rSrcId === String(src.categoryId) ||
+          (rSrcType === 'category' && (
+            (rSrcLabel && rSrcLabel.toLowerCase() === src.categoryName.toLowerCase()) ||
+            rSrcId.includes(src.categoryName) ||
+            (rReason && rReason.toLowerCase() === src.categoryName.toLowerCase())
+          ))
+        );
+      }
+    });
+  };
+
+  // Filtrelenmiş matris satırları
+  const filteredMatrixSources = useMemo(() => {
+    return dynamicMatrixSources.filter(src => {
+      // 1. Araç kategorisi filtresi (Binek / Ticari)
+      if (matrixFilter === 'binek' && src.categoryType === 'commercial') return false;
+      if (matrixFilter === 'commercial' && src.categoryType === 'binek') return false;
+
+      // 2. Kaynak türü filtresi (Tümü / Sadece Sorular / Sadece Balonlar)
+      if (matrixSourceTypeFilter === 'question' && src.type !== 'question') return false;
+      if (matrixSourceTypeFilter === 'category' && src.type !== 'category') return false;
+
+      // 3. Arama kutusu
+      if (matrixSearch.trim()) {
+        const q = matrixSearch.toLowerCase();
+        const mLabel = (src.label || '').toLowerCase().includes(q);
+        const mSub = (src.subLabel || '').toLowerCase().includes(q);
+        const mParent = (src.questionTitle || '').toLowerCase().includes(q);
+        if (!mLabel && !mSub && !mParent) return false;
+      }
+
+      return true;
+    });
+  }, [dynamicMatrixSources, matrixFilter, matrixSourceTypeFilter, matrixSearch]);
+
+  // Matris sütunlarında gösterilecek filtrelenmiş araçlar
+  const matrixVehicles = useMemo(() => {
+    if (matrixFilter === 'binek') {
+      return (vehicles || []).filter(v => v.type === 'binek' || v.type === 'binek-ticari');
+    }
+    if (matrixFilter === 'commercial') {
+      return (vehicles || []).filter(v => v.type === 'ticari' || v.type === 'commercial' || v.type === 'binek-ticari');
+    }
+    return vehicles || [];
+  }, [vehicles, matrixFilter]);
+
 
   // -------------------------------------------------------------------------
   // LOGIN SCREEN (TOYOTA TÜRKİYE CLEAN LIGHT MODE)
@@ -2513,102 +2741,487 @@ export function AdminPanel({ onExit }) {
           {/* ======================================================== */}
           {/* 3. MATCHING MATRIX SECTION                               */}
           {/* ======================================================== */}
+          {/* 3. MATCHING MATRIX (DYNAMIC WEIGHT ENGINE)               */}
+          {/* ======================================================== */}
           {activeNav === 'matrix' && (
             <div>
-              <div style={{ marginBottom: 16 }}>
-                <h3 style={{ margin: 0, fontSize: 16, color: '#111827', fontWeight: 800 }}>
-                  Akıllı Eşleştirme Matrisi (Ağırlık Motoru)
-                </h3>
-                <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6B7280' }}>
-                  Hücreye tıklayarak sorunun veya balonun ilgili Toyota modeline ekleyeceği puanı ve neden rozetini güncelleyebilirsiniz.
-                </p>
-              </div>
-
+              {/* Header Info */}
               <div style={{
                 background: '#FFFFFF',
-                borderRadius: 10,
+                borderRadius: 8,
+                border: '1px solid #E5E7EB',
+                padding: '16px 20px',
+                marginBottom: 16,
+                boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <SlidersIcon size={16} color="#EB0A1E" />
+                      <h3 style={{ margin: 0, fontSize: 16, color: '#111827', fontWeight: 800 }}>
+                        Akıllı Eşleştirme Matrisi
+                      </h3>
+                      <span style={{
+                        background: '#F3F4F6',
+                        color: '#4B5563',
+                        fontSize: 11,
+                        fontWeight: 700,
+                        padding: '1px 6px',
+                        borderRadius: 4,
+                        border: '1px solid #E5E7EB'
+                      }}>
+                        Ağırlık Motoru
+                      </span>
+                    </div>
+                    <p style={{ margin: 0, fontSize: 12, color: '#6B7280' }}>
+                      Sisteme eklenen tüm soru seçenekleri ve kategori balonları (binek & ticari) otomatik listelenir. Hücrelere tıklayarak modele verilecek puanı ve neden rozetini yönetebilirsiniz.
+                    </p>
+                  </div>
+
+                  {/* Summary Counters (Bootstrap badge style) */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    <div style={{
+                      background: '#F8FAFC',
+                      border: '1px solid #E2E8F0',
+                      borderRadius: 6,
+                      padding: '5px 10px',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: '#334155'
+                    }}>
+                      <span style={{ color: '#0F172A', fontWeight: 800 }}>{dynamicMatrixSources.length}</span> Kaynak
+                    </div>
+                    <div style={{
+                      background: '#F8FAFC',
+                      border: '1px solid #E2E8F0',
+                      borderRadius: 6,
+                      padding: '5px 10px',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: '#334155'
+                    }}>
+                      <span style={{ color: '#0F172A', fontWeight: 800 }}>{matrixVehicles.length}</span> Model
+                    </div>
+                    <div style={{
+                      background: '#F0FDF4',
+                      border: '1px solid #BBF7D0',
+                      borderRadius: 6,
+                      padding: '5px 10px',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: '#166534'
+                    }}>
+                      <span style={{ fontWeight: 800 }}>{rules.length}</span> Aktif Kural
+                    </div>
+                  </div>
+                </div>
+
+                {/* Filter Toolbar (Clean Bootstrap nav-pills & button-group) */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 12,
+                  marginTop: 14,
+                  paddingTop: 14,
+                  borderTop: '1px solid #F1F5F9',
+                  flexWrap: 'wrap'
+                }}>
+                  {/* Category Filter Tabs */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => setMatrixFilter('all')}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        background: matrixFilter === 'all' ? '#111827' : '#FFFFFF',
+                        color: matrixFilter === 'all' ? '#FFFFFF' : '#374151',
+                        border: matrixFilter === 'all' ? '1px solid #111827' : '1px solid #D1D5DB'
+                      }}
+                    >
+                      <GridIcon size={13} color={matrixFilter === 'all' ? '#FFFFFF' : '#6B7280'} />
+                      <span>Tümü ({vehicles.length} Model)</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setMatrixFilter('binek')}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        background: matrixFilter === 'binek' ? '#EB0A1E' : '#FFFFFF',
+                        color: matrixFilter === 'binek' ? '#FFFFFF' : '#374151',
+                        border: matrixFilter === 'binek' ? '1px solid #EB0A1E' : '1px solid #D1D5DB'
+                      }}
+                    >
+                      <CarFrontIcon size={13} color={matrixFilter === 'binek' ? '#FFFFFF' : '#6B7280'} />
+                      <span>Binek ({vehicles.filter(v => v.type === 'binek' || v.type === 'binek-ticari').length} Model)</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setMatrixFilter('commercial')}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        background: matrixFilter === 'commercial' ? '#1D4ED8' : '#FFFFFF',
+                        color: matrixFilter === 'commercial' ? '#FFFFFF' : '#374151',
+                        border: matrixFilter === 'commercial' ? '1px solid #1D4ED8' : '1px solid #D1D5DB'
+                      }}
+                    >
+                      <TruckIcon size={13} color={matrixFilter === 'commercial' ? '#FFFFFF' : '#6B7280'} />
+                      <span>Ticari ({vehicles.filter(v => v.type === 'ticari' || v.type === 'commercial' || v.type === 'binek-ticari').length} Model)</span>
+                    </button>
+                  </div>
+
+                  {/* Sub-Filters: Source Type & Search */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    {/* Source Type Filter (Bootstrap btn-group style) */}
+                    <div style={{
+                      display: 'inline-flex',
+                      background: '#F1F5F9',
+                      border: '1px solid #E2E8F0',
+                      borderRadius: 6,
+                      padding: 2
+                    }}>
+                      <button
+                        type="button"
+                        onClick={() => setMatrixSourceTypeFilter('all')}
+                        style={{
+                          border: 'none',
+                          padding: '4px 10px',
+                          borderRadius: 4,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          background: matrixSourceTypeFilter === 'all' ? '#FFFFFF' : 'transparent',
+                          color: matrixSourceTypeFilter === 'all' ? '#0F172A' : '#64748B',
+                          boxShadow: matrixSourceTypeFilter === 'all' ? '0 1px 2px rgba(0,0,0,0.05)' : 'none'
+                        }}
+                      >
+                        Hepsi
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMatrixSourceTypeFilter('question')}
+                        style={{
+                          border: 'none',
+                          padding: '4px 10px',
+                          borderRadius: 4,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 4,
+                          background: matrixSourceTypeFilter === 'question' ? '#FFFFFF' : 'transparent',
+                          color: matrixSourceTypeFilter === 'question' ? '#991B1B' : '#64748B',
+                          boxShadow: matrixSourceTypeFilter === 'question' ? '0 1px 2px rgba(0,0,0,0.05)' : 'none'
+                        }}
+                      >
+                        <QuestionCircleIcon size={11} color={matrixSourceTypeFilter === 'question' ? '#991B1B' : '#64748B'} />
+                        <span>Sorular</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMatrixSourceTypeFilter('category')}
+                        style={{
+                          border: 'none',
+                          padding: '4px 10px',
+                          borderRadius: 4,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 4,
+                          background: matrixSourceTypeFilter === 'category' ? '#FFFFFF' : 'transparent',
+                          color: matrixSourceTypeFilter === 'category' ? '#1D4ED8' : '#64748B',
+                          boxShadow: matrixSourceTypeFilter === 'category' ? '0 1px 2px rgba(0,0,0,0.05)' : 'none'
+                        }}
+                      >
+                        <TagIcon size={11} color={matrixSourceTypeFilter === 'category' ? '#1D4ED8' : '#64748B'} />
+                        <span>Balonlar</span>
+                      </button>
+                    </div>
+
+                    {/* Search Input with SearchIcon */}
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                      <span style={{ position: 'absolute', left: 8, color: '#94A3B8', pointerEvents: 'none' }}>
+                        <SearchIcon size={12} color="#94A3B8" />
+                      </span>
+                      <input
+                        type="text"
+                        value={matrixSearch}
+                        onChange={e => setMatrixSearch(e.target.value)}
+                        placeholder="Kaynak veya soru ara..."
+                        style={{
+                          height: 30,
+                          padding: '0 24px 0 26px',
+                          fontSize: 12,
+                          border: '1px solid #CBD5E1',
+                          borderRadius: 6,
+                          width: 170,
+                          background: '#FFFFFF',
+                          color: '#0F172A',
+                          boxSizing: 'border-box'
+                        }}
+                      />
+                      {matrixSearch && (
+                        <button
+                          type="button"
+                          onClick={() => setMatrixSearch('')}
+                          style={{
+                            position: 'absolute',
+                            right: 6,
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            color: '#94A3B8'
+                          }}
+                        >
+                          <CloseIcon size={12} color="#94A3B8" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Table Container */}
+              <div style={{
+                background: '#FFFFFF',
+                borderRadius: 8,
                 border: '1px solid #E5E7EB',
                 overflowX: 'auto',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+                boxShadow: '0 1px 2px rgba(0,0,0,0.02)',
+                maxHeight: 'calc(100vh - 270px)',
+                overflowY: 'auto',
+                position: 'relative'
               }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: 12 }}>
+                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, textAlign: 'left', fontSize: 12 }}>
                   <thead>
-                    <tr style={{ background: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
-                      <th style={{ padding: '12px 16px', minWidth: 240, color: '#374151', fontWeight: 700 }}>
-                        Soru / Balon Kaynağı
+                    <tr style={{ background: '#F8FAFC' }}>
+                      {/* Pinned Sticky First Column Header */}
+                      <th style={{
+                        position: 'sticky',
+                        left: 0,
+                        top: 0,
+                        zIndex: 20,
+                        background: '#F1F5F9',
+                        padding: '12px 16px',
+                        minWidth: 280,
+                        maxWidth: 320,
+                        color: '#0F172A',
+                        fontWeight: 800,
+                        borderBottom: '2px solid #CBD5E1',
+                        borderRight: '2px solid #E2E8F0',
+                        boxShadow: '1px 0 3px rgba(0,0,0,0.02)'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span>Soru / Balon Kaynağı</span>
+                          <span style={{ fontSize: 11, fontWeight: 600, color: '#64748B' }}>
+                            ({filteredMatrixSources.length} Kayıt)
+                          </span>
+                        </div>
                       </th>
-                      {vehicles.slice(0, 8).map(v => (
-                        <th key={v.id} style={{ padding: '10px 12px', textAlign: 'center', minWidth: 90, color: '#111827', fontWeight: 700 }}>
-                          <div>{v.name}</div>
-                          <div style={{ fontSize: 10, color: '#6B7280', fontWeight: 500 }}>{v.type}</div>
-                        </th>
-                      ))}
+
+                      {/* Vehicle Columns Header */}
+                      {matrixVehicles.map(v => {
+                        const isCommercial = v.type?.includes('ticari') || v.type?.includes('commercial');
+                        return (
+                          <th
+                            key={v.id}
+                            style={{
+                              position: 'sticky',
+                              top: 0,
+                              zIndex: 10,
+                              background: '#F8FAFC',
+                              padding: '10px 8px',
+                              textAlign: 'center',
+                              minWidth: 96,
+                              color: '#0F172A',
+                              fontWeight: 700,
+                              borderBottom: '2px solid #CBD5E1',
+                              borderRight: '1px solid #F1F5F9'
+                            }}
+                          >
+                            <div style={{ fontWeight: 800, fontSize: 12, whiteSpace: 'nowrap' }}>{v.name}</div>
+                            <div style={{
+                              display: 'inline-block',
+                              marginTop: 2,
+                              padding: '1px 5px',
+                              borderRadius: 4,
+                              fontSize: 9,
+                              fontWeight: 700,
+                              textTransform: 'uppercase',
+                              background: isCommercial ? '#EFF6FF' : '#F1F5F9',
+                              color: isCommercial ? '#1D4ED8' : '#475569',
+                              border: isCommercial ? '1px solid #DBEAFE' : '1px solid #E2E8F0'
+                            }}>
+                              {isCommercial ? 'Ticari' : 'Binek'}
+                            </div>
+                          </th>
+                        );
+                      })}
                     </tr>
                   </thead>
                   <tbody>
-                    {matrixSources.map((src, sIdx) => (
-                      <tr
-                        key={src.id}
-                        style={{
-                          borderBottom: '1px solid #F3F4F6',
-                          background: sIdx % 2 === 0 ? '#FFFFFF' : '#FAFAFA'
-                        }}
-                      >
-                        <td style={{ padding: '12px 16px', fontWeight: 600, color: '#111827' }}>
-                          <span style={{
-                            display: 'inline-block',
-                            width: 6,
-                            height: 6,
-                            borderRadius: '50%',
-                            background: src.type === 'question' ? '#EB0A1E' : '#3B82F6',
-                            marginRight: 8
-                          }} />
-                          {src.label}
+                    {filteredMatrixSources.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={matrixVehicles.length + 1}
+                          style={{ padding: '36px 20px', textAlign: 'center', color: '#64748B', fontSize: 13 }}
+                        >
+                          Filtre veya arama kriterine uygun soru seçeneği ya da kategori balonu bulunamadı.
                         </td>
-
-                        {vehicles.slice(0, 8).map(v => {
-                          const existingRule = rules.find(r => r.source_id === src.id && r.vehicle_id === v.id);
-                          const w = existingRule?.weight || 0;
-
-                          return (
-                            <td
-                              key={v.id}
-                              onClick={() => {
-                                setActiveCell({
-                                  source_id: src.id,
-                                  source_label: src.label,
-                                  source_type: src.type,
-                                  vehicle_id: v.id,
-                                  vehicle_name: v.name
-                                });
-                                setCellWeight(w || 25);
-                                setCellBadge(existingRule?.reason_badge || '');
-                              }}
-                              style={{
-                                padding: '8px 12px',
-                                textAlign: 'center',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              {w > 0 ? (
-                                <span style={{
-                                  background: w >= 30 ? '#FEE2E2' : '#DEF7EC',
-                                  color: w >= 30 ? '#991B1B' : '#03543F',
-                                  padding: '3px 6px',
-                                  borderRadius: 4,
-                                  fontSize: 11,
-                                  fontWeight: 800
-                                }}>
-                                  +{w}p
-                                </span>
-                              ) : (
-                                <span style={{ color: '#D1D5DB' }}>—</span>
-                              )}
-                            </td>
-                          );
-                        })}
                       </tr>
-                    ))}
+                    ) : (
+                      filteredMatrixSources.map((src, sIdx) => {
+                        const isEven = sIdx % 2 === 0;
+                        const rowBg = isEven ? '#FFFFFF' : '#FBFCFD';
+
+                        // Bu satır için kaç araçta puan tanımlanmış hesapla
+                        const activeRuleCount = matrixVehicles.filter(v => {
+                          const r = getMatrixCellRule(src, v.id);
+                          return (r?.weight ?? r?.score ?? 0) > 0;
+                        }).length;
+
+                        return (
+                          <tr
+                            key={src.id}
+                            style={{
+                              borderBottom: '1px solid #F1F5F9',
+                              background: rowBg
+                            }}
+                          >
+                            {/* Pinned Sticky First Column Cell */}
+                            <td style={{
+                              position: 'sticky',
+                              left: 0,
+                              zIndex: 5,
+                              background: rowBg,
+                              padding: '10px 14px',
+                              fontWeight: 600,
+                              color: '#0F172A',
+                              borderBottom: '1px solid #F1F5F9',
+                              borderRight: '2px solid #E2E8F0',
+                              boxShadow: '1px 0 3px rgba(0,0,0,0.02)'
+                            }}>
+                              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                                <span style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  padding: '2px 5px',
+                                  borderRadius: 4,
+                                  fontSize: 9,
+                                  fontWeight: 800,
+                                  letterSpacing: '0.3px',
+                                  marginTop: 1,
+                                  background: src.type === 'question' ? '#FEF2F2' : '#EFF6FF',
+                                  color: src.type === 'question' ? '#991B1B' : '#1D4ED8',
+                                  border: src.type === 'question' ? '1px solid #FEE2E2' : '1px solid #DBEAFE',
+                                  flexShrink: 0
+                                }}>
+                                  {src.type === 'question' ? 'SORU' : 'BALON'}
+                                </span>
+
+                                <div style={{ minWidth: 0, flex: 1 }}>
+                                  {src.type === 'question' && (
+                                    <div style={{ fontSize: 10, color: '#64748B', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                      {src.questionTitle}
+                                    </div>
+                                  )}
+                                  <div style={{ fontSize: 12, fontWeight: 700, color: '#0F172A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    {src.subLabel}
+                                  </div>
+                                  <div style={{ fontSize: 10, color: activeRuleCount > 0 ? '#16A34A' : '#94A3B8', fontWeight: 600, marginTop: 1 }}>
+                                    {activeRuleCount > 0 ? `${activeRuleCount} modelde aktif` : 'Puan atanmamış'}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Vehicle Weight Score Cells */}
+                            {matrixVehicles.map(v => {
+                              const existingRule = getMatrixCellRule(src, v.id);
+                              const w = existingRule ? (existingRule.weight ?? existingRule.score ?? 0) : 0;
+                              const badgeText = existingRule?.reasonBadge || existingRule?.reason_badge || '';
+
+                              return (
+                                <td
+                                  key={v.id}
+                                  onClick={() => {
+                                    setActiveCell({
+                                      source_id: existingRule?.sourceId || existingRule?.source_id || src.id,
+                                      source_label: src.label,
+                                      source_type: src.type,
+                                      vehicle_id: v.id,
+                                      vehicle_name: v.name
+                                    });
+                                    setCellWeight(w || 25);
+                                    setCellBadge(badgeText || src.subLabel);
+                                  }}
+                                  title={w > 0 ? `${v.name}: +${w} puan ${badgeText ? `(${badgeText})` : ''}` : `${v.name} için kural ekle`}
+                                  style={{
+                                    padding: '8px',
+                                    textAlign: 'center',
+                                    cursor: 'pointer',
+                                    borderBottom: '1px solid #F1F5F9',
+                                    borderRight: '1px solid #F8FAFC',
+                                    transition: 'background 0.1s ease'
+                                  }}
+                                  onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9'; }}
+                                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                                >
+                                  {w > 0 ? (
+                                    <span style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      background: w >= 35 ? '#FEF2F2' : '#F0FDF4',
+                                      color: w >= 35 ? '#991B1B' : '#166534',
+                                      border: w >= 35 ? '1px solid #FECACA' : '1px solid #BBF7D0',
+                                      padding: '2px 6px',
+                                      borderRadius: 4,
+                                      fontSize: 11,
+                                      fontWeight: 800
+                                    }}>
+                                      +{w}p
+                                    </span>
+                                  ) : (
+                                    <span style={{ color: '#CBD5E1', fontSize: 13, userSelect: 'none' }}>—</span>
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -5684,39 +6297,63 @@ export function AdminPanel({ onExit }) {
               />
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 4 }}>
-              <button
-                type="button"
-                onClick={() => setActiveCell(null)}
-                style={{
-                  background: '#FFFFFF',
-                  border: '1px solid #D1D5DB',
-                  color: '#4B5563',
-                  padding: '6px 12px',
-                  borderRadius: 6,
-                  fontSize: 12,
-                  cursor: 'pointer'
-                }}
-              >
-                Kapat
-              </button>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginTop: 4 }}>
+              {parseInt(cellWeight, 10) > 0 ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCellWeight(0);
+                    setCellBadge('');
+                  }}
+                  style={{
+                    background: '#FEE2E2',
+                    border: '1px solid #FECACA',
+                    color: '#DC2626',
+                    padding: '6px 12px',
+                    borderRadius: 6,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Puanı Sıfırla (Kaldır)
+                </button>
+              ) : <div />}
 
-              <button
-                type="button"
-                onClick={handleSaveCell}
-                style={{
-                  background: '#EB0A1E',
-                  color: '#FFFFFF',
-                  border: 'none',
-                  padding: '6px 16px',
-                  borderRadius: 6,
-                  fontSize: 12,
-                  fontWeight: 700,
-                  cursor: 'pointer'
-                }}
-              >
-                Kaydet
-              </button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => setActiveCell(null)}
+                  style={{
+                    background: '#FFFFFF',
+                    border: '1px solid #D1D5DB',
+                    color: '#4B5563',
+                    padding: '6px 12px',
+                    borderRadius: 6,
+                    fontSize: 12,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Kapat
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSaveCell}
+                  style={{
+                    background: '#EB0A1E',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    padding: '6px 16px',
+                    borderRadius: 6,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Kaydet
+                </button>
+              </div>
             </div>
           </div>
         </div>

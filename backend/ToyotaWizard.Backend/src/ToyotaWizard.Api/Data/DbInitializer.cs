@@ -367,7 +367,51 @@ public static class DbInitializer
                 new() { SourceType = "category", SourceId = "cat:10:Elektrikli kullanım desteği (Hibrit)", SourceLabel = "Hibrit", VehicleId = "yaris", Weight = 25, ReasonBadge = "Kendini Şarj Eden Hibrit" },
                 new() { SourceType = "category", SourceId = "cat:10:Elektrikli kullanım desteği (Hibrit)", SourceLabel = "Hibrit", VehicleId = "c-hr", Weight = 25, ReasonBadge = "Yeni Nesil Hibrit Gücü" },
                 new() { SourceType = "category", SourceId = "cat:10:Elektrikli kullanım desteği (Hibrit)", SourceLabel = "Hibrit", VehicleId = "corolla-cross", Weight = 25, ReasonBadge = "Güçlü Hibrit Dinamizmi" },
-                new() { SourceType = "category", SourceId = "cat:10:Elektrikli kullanım desteği (Hibrit)", SourceLabel = "Hibrit", VehicleId = "rav4", Weight = 25, ReasonBadge = "222 HP Hibrit Güç" }
+                new() { SourceType = "category", SourceId = "cat:10:Elektrikli kullanım desteği (Hibrit)", SourceLabel = "Hibrit", VehicleId = "rav4", Weight = 25, ReasonBadge = "222 HP Hibrit Güç" },
+
+                // Ticari Araç Kategori Balonları (100..111)
+                new() { SourceType = "category", SourceId = "cat:100:Yükleme-indirme kolaylığı", SourceLabel = "Yükleme-indirme kolaylığı", VehicleId = "proace", Weight = 35, ReasonBadge = "Çift Sürgülü Kapı & 180° Açılır Arka Kapılar" },
+                new() { SourceType = "category", SourceId = "cat:100:Yükleme-indirme kolaylığı", SourceLabel = "Yükleme-indirme kolaylığı", VehicleId = "proace-city", Weight = 35, ReasonBadge = "Geniş Asimetrik Arka Kargo Kapıları" },
+                new() { SourceType = "category", SourceId = "cat:100:Yükleme-indirme kolaylığı", SourceLabel = "Yükleme-indirme kolaylığı", VehicleId = "hilux", Weight = 30, ReasonBadge = "Geniş Açık Kasa & Alçak Yükleme Eşiği" },
+
+                new() { SourceType = "category", SourceId = "cat:101:Yüksek park kabiliyeti", SourceLabel = "Yüksek park kabiliyeti", VehicleId = "proace-city", Weight = 35, ReasonBadge = "Geri Görüş Kamerası & Park Sensörleri" },
+                new() { SourceType = "category", SourceId = "cat:101:Yüksek park kabiliyeti", SourceLabel = "Yüksek park kabiliyeti", VehicleId = "proace-city-verso", Weight = 35, ReasonBadge = "Kompakt Şehir Boyutları & Kolay Park" },
+                new() { SourceType = "category", SourceId = "cat:101:Yüksek park kabiliyeti", SourceLabel = "Yüksek park kabiliyeti", VehicleId = "proace-verso", Weight = 25, ReasonBadge = "Geri Görüş Kamerası Destekli Park" },
+
+                new() { SourceType = "category", SourceId = "cat:102:Maksimum taşınabilecek europalet adedi", SourceLabel = "Maksimum taşınabilecek europalet adedi", VehicleId = "proace", Weight = 40, ReasonBadge = "2 Tam Boy Europalet Taşıma Kapasitesi" },
+                new() { SourceType = "category", SourceId = "cat:102:Maksimum taşınabilecek europalet adedi", SourceLabel = "Maksimum taşınabilecek europalet adedi", VehicleId = "proace-city", Weight = 30, ReasonBadge = "1 Tam Boy Europalet Kargo Alanı" },
+
+                new() { SourceType = "category", SourceId = "cat:103:Taşıma kapasitesi (yolcu dahil)", SourceLabel = "Taşıma kapasitesi (yolcu dahil)", VehicleId = "hilux", Weight = 45, ReasonBadge = "1000 kg Taşıma & 3500 kg Çekme Gücü" },
+                new() { SourceType = "category", SourceId = "cat:103:Taşıma kapasitesi (yolcu dahil)", SourceLabel = "Taşıma kapasitesi (yolcu dahil)", VehicleId = "proace", Weight = 40, ReasonBadge = "1400 kg Yüksek İstiap Haddi" },
+                new() { SourceType = "category", SourceId = "cat:103:Taşıma kapasitesi (yolcu dahil)", SourceLabel = "Taşıma kapasitesi (yolcu dahil)", VehicleId = "proace-city", Weight = 30, ReasonBadge = "1000 kg Kargo Taşıma Haddi" },
+                new() { SourceType = "category", SourceId = "cat:103:Taşıma kapasitesi (yolcu dahil)", SourceLabel = "Taşıma kapasitesi (yolcu dahil)", VehicleId = "proace-verso", Weight = 35, ReasonBadge = "9 Kişilik Yüksek Yolcu & Bagaj Taşıma" },
+
+                new() { SourceType = "category", SourceId = "cat:104:Yük sabitleme kancaları", SourceLabel = "Yük sabitleme kancaları", VehicleId = "proace", Weight = 35, ReasonBadge = "Zemin ve Tavanda 8 Adet Sabitleme Kancası" },
+                new() { SourceType = "category", SourceId = "cat:104:Yük sabitleme kancaları", SourceLabel = "Yük sabitleme kancaları", VehicleId = "proace-city", Weight = 35, ReasonBadge = "6 Adet Sağlam Yük Sabitleme Halkası" },
+                new() { SourceType = "category", SourceId = "cat:104:Yük sabitleme kancaları", SourceLabel = "Yük sabitleme kancaları", VehicleId = "hilux", Weight = 30, ReasonBadge = "Kasa İçi Ağır Hizmet Sabitleme Mapaları" },
+
+                new() { SourceType = "category", SourceId = "cat:105:Araç içi güç çıkışı", SourceLabel = "Araç içi güç çıkışı", VehicleId = "proace", Weight = 35, ReasonBadge = "230V Ev Tipi Priz & 12V Güç Çıkışı" },
+                new() { SourceType = "category", SourceId = "cat:105:Araç içi güç çıkışı", SourceLabel = "Araç içi güç çıkışı", VehicleId = "proace-city", Weight = 30, ReasonBadge = "12V Priz & Hızlı Şarj USB Portları" },
+                new() { SourceType = "category", SourceId = "cat:105:Araç içi güç çıkışı", SourceLabel = "Araç içi güç çıkışı", VehicleId = "hilux", Weight = 30, ReasonBadge = "Kabin & Kasa İçi 12V/220V Güç Soketi" },
+
+                new() { SourceType = "category", SourceId = "cat:106:Mobil ofis / masaya dönüşebilen orta koltuk", SourceLabel = "Mobil ofis / masaya dönüşebilen orta koltuk", VehicleId = "proace", Weight = 40, ReasonBadge = "Smart Cargo Katlanır Yazı Masası & Ofis" },
+                new() { SourceType = "category", SourceId = "cat:106:Mobil ofis / masaya dönüşebilen orta koltuk", SourceLabel = "Mobil ofis / masaya dönüşebilen orta koltuk", VehicleId = "proace-city", Weight = 40, ReasonBadge = "Smart Cargo Mobil Ofis Masası" },
+
+                new() { SourceType = "category", SourceId = "cat:107:Tüm köprü ve otoyollardan geçebilen", SourceLabel = "Tüm köprü ve otoyollardan geçebilen", VehicleId = "proace-city", Weight = 40, ReasonBadge = "1. Sınıf HGS/OGS Köprü & Otoyol Geçişi" },
+                new() { SourceType = "category", SourceId = "cat:107:Tüm köprü ve otoyollardan geçebilen", SourceLabel = "Tüm köprü ve otoyollardan geçebilen", VehicleId = "proace-city-verso", Weight = 40, ReasonBadge = "1. Sınıf Araç Statüsüyle Serbest Köprü Geçişi" },
+
+                new() { SourceType = "category", SourceId = "cat:108:Sürücü kabininden bağımsız yük bölümü", SourceLabel = "Sürücü kabininden bağımsız yük bölümü", VehicleId = "proace", Weight = 35, ReasonBadge = "Tam Kapalı Çelik Sac Kargo Ara Bölmesi" },
+                new() { SourceType = "category", SourceId = "cat:108:Sürücü kabininden bağımsız yük bölümü", SourceLabel = "Sürücü kabininden bağımsız yük bölümü", VehicleId = "proace-city", Weight = 35, ReasonBadge = "Pencereli/Tam Sac Kargo Ayracı" },
+
+                new() { SourceType = "category", SourceId = "cat:109:Uzun ve ince yükleri sığdırabilen", SourceLabel = "Uzun ve ince yükleri sığdırabilen", VehicleId = "proace", Weight = 40, ReasonBadge = "Smart Cargo ile 4m Uzunlukta Boru/Malzeme" },
+                new() { SourceType = "category", SourceId = "cat:109:Uzun ve ince yükleri sığdırabilen", SourceLabel = "Uzun ve ince yükleri sığdırabilen", VehicleId = "proace-city", Weight = 40, ReasonBadge = "Ön Koltuk Altı Tünel ile 3.44m Yükleme" },
+                new() { SourceType = "category", SourceId = "cat:109:Uzun ve ince yükleri sığdırabilen", SourceLabel = "Uzun ve ince yükleri sığdırabilen", VehicleId = "hilux", Weight = 35, ReasonBadge = "Açık Kasa & Tavan Rayı ile Uzun Malzeme" },
+
+                new() { SourceType = "category", SourceId = "cat:110:Dar sokaklara rahat giren (küçük dönüş çaplı)", SourceLabel = "Dar sokaklara rahat giren (küçük dönüş çaplı)", VehicleId = "proace-city", Weight = 40, ReasonBadge = "10.8m Sınıfının En İyi Dönüş Çapı" },
+                new() { SourceType = "category", SourceId = "cat:110:Dar sokaklara rahat giren (küçük dönüş çaplı)", SourceLabel = "Dar sokaklara rahat giren (küçük dönüş çaplı)", VehicleId = "proace-city-verso", Weight = 35, ReasonBadge = "Şehir İçi Kolay Manevra & Dönüş Kabiliyeti" },
+
+                new() { SourceType = "category", SourceId = "cat:111:Yolcu Taşımacılığı", SourceLabel = "Yolcu Taşımacılığı", VehicleId = "proace-verso", Weight = 45, ReasonBadge = "9 Kişilik VIP & Turizm Yolcu Transferi" },
+                new() { SourceType = "category", SourceId = "cat:111:Yolcu Taşımacılığı", SourceLabel = "Yolcu Taşımacılığı", VehicleId = "proace-city-verso", Weight = 40, ReasonBadge = "7 Kişilik Geniş Aile & Shuttle Düzeni" }
             };
             context.MatchingRules.AddRange(rules);
         }
